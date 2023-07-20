@@ -33401,6 +33401,7 @@ var createOrUpdateEnvironmentSecret = async (event, octokit, smClient) => {
   const { data } = await octokit.request("GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key", { repository_id, environment_name });
   const encryptedSecret = await encryptValue(secretString, data.key);
   console.log("Encrypted secret, attempting to create/update github secret");
+  console.log(`secretString: ${secretString}, owner: ${owner}, repository_id: ${repository_id}, public_key: ${data.key}, encryptedSecret: ${encryptedSecret}`);
   const secretResponse = await octokit.request("PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}", {
     repository_id,
     environment_name,
