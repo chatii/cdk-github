@@ -46,13 +46,11 @@ junit.xml
 !/test/
 !/tsconfig.dev.json
 !/src/
-/lib
 /dist/
 !/.eslintrc.json
 .jsii
 tsconfig.json
 !/API.md
-/assets/
 !/src/handler/github-resource/github-resource-handler-function.ts
 !/src/handler/secrets/action-environment-secrets/action-environment-secret-handler-function.ts
 !/src/handler/secrets/action-secrets/action-secret-handler-function.ts
