@@ -33389,7 +33389,6 @@ var onDelete = async (event, octokit) => {
 var createOrUpdateEnvironmentSecret = async (event, octokit, smClient) => {
   const {
     repositoryOwner,
-    repositoryName: repo,
     repositorySecretName: secret_name,
     environment: environment_name,
     sourceSecretArn: secretId,
@@ -33398,10 +33397,10 @@ var createOrUpdateEnvironmentSecret = async (event, octokit, smClient) => {
   console.log(`Encrypt value of secret with id: ${secretId}`);
   const secretString = await getSecretString(secretId, smClient, sourceSecretJsonField);
   const owner = await getOwner(octokit, repositoryOwner);
-  const { data } = await octokit.request("GET /repos/{owner}/{repo}/actions/secrets/public-key", { owner, repo });
+  const repository_id = await getRepositoryId(event, octokit, owner);
+  const { data } = await octokit.request("GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key", { repository_id, environment_name });
   const encryptedSecret = await encryptValue(secretString, data.key);
   console.log("Encrypted secret, attempting to create/update github secret");
-  const repository_id = await getRepositoryId(event, octokit, owner);
   const secretResponse = await octokit.request("PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}", {
     repository_id,
     environment_name,
